@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>Add a timer with start and pause button</div>
+<div>add difficulty selector that changes how many match squares there are</div>
+<div class="d-flex flex-wrap justify-content-center">
+    {% for i in item_list %}
+    <div class="card m-2 rounded" data-card="{{ i }}">
+        <div class="card-inner">
+            <div class="card-front box">
+                <img src="/static/images/card-back.png" class="box">
+            </div>
+            <div id="back" class="card-back {{ i }}">
+                <p class="{{ i }}">{{ i }}</p>
+                <p><img src="{{ sprite + i + '.png' }}" alt=""></p>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+
+<div class="container">
+    <div class="counter">
+        <p>Score: <span id="counter"></span></p>
+    </div>
+    <div class="new-game">
+        <button onclick="">New Game?</button>
+    </div>
+</div>
+
+<script>
+let count = 0;
+console.log(count)
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.card');
+
+    let flippedCards = [];
+    function counter(c){
+        console.log('pre counter function', c);
+        ++c;
+        console.log('post counter function', c);
+
+        document.getElementById('counter').innerHTML = c
+    }
+
+  cards.forEach(card => {
+    card.addEventListener('click', function() {
+      if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+        card.classList.add('flipped');
+        flippedCards.push(card);
+        
+        if (flippedCards.length === 2) {
+          // Check if the flipped cards match
+          const [card1, card2] = flippedCards;
+          console.log(card1, card2)
+          console.log(flippedCards)
+          if (card1.dataset.card === card2.dataset.card) {
+            // Cards match, do something (e.g., keep them flipped)
+            flippedCards = [];
+            counter(count)
+
+          } else {
+            // Cards don't match, flip them back
+            setTimeout(() => {
+              card1.classList.remove('flipped');
+              card2.classList.remove('flipped');
+              flippedCards = [];
+            }, 1000); // Delay to show the cards for a brief moment
+          }
+        }
+      }
+    });
+  });
+});
+
+
+
+</script>
+
+{% endblock %}

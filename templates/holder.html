@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+
+
+<script>
+    console.log('hello')
+
+</script>
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-center">
+    {% for i in item_list %}
+    <div class="box p-3 m-2 bg-warning">
+        <div id="{{ item_list.index(i) }}" class="cardFront square">
+            some design {{ loop.index }}
+        </div>
+        <div id="back" class="cardBack {{ i }}">
+            <p class="{{ i }}">{{ i }}</p>
+            <img src="{{ sprite + i + '.png' }}" alt="">
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+<div class="container">
+    <div class="counter">
+        <p>Score: <span id="counter"></span></p>
+    </div>
+    <div id="0">example id</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const cards = document.querySelectorAll('.card');
+
+  let flippedCards = [];
+  
+  cards.forEach(card => {
+    card.addEventListener('click', function() {
+      if (flippedCards.length < 2 && !card.classList.contains('flipped')) {
+        card.classList.add('flipped');
+        flippedCards.push(card);
+        
+        if (flippedCards.length === 2) {
+          // Check if the flipped cards match
+          const [card1, card2] = flippedCards;
+          if (card1.dataset.card === card2.dataset.card) {
+            // Cards match, do something (e.g., keep them flipped)
+          } else {
+            // Cards don't match, flip them back
+            setTimeout(() => {
+              card1.classList.remove('flipped');
+              card2.classList.remove('flipped');
+              flippedCards = [];
+            }, 1000); // Delay to show the cards for a brief moment
+          }
+        }
+      }
+    });
+  });
+});
+
+
+
+</script>
+
+{% endblock %}
